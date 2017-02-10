@@ -1,0 +1,159 @@
+What my project currently has
+=============================
+
+Fields
+------
+
+JPanel board:
+
++ The board of the game
+
+JFrame frame:
+
++ The frame the board is place on
+
+JButton[][] buttonGrid:
+
++ The buttons that will go on the board
+
+boolean whiteTurn:
+
++ Whose turn it is
+
+	+ true = white turn
+	
+	+ false = black turn
+
+Game Board
+----------
+
+Three constructors:
+
++ Two parameters, set the number of rows and columns
+
++ One parameter, number of rows == number of columns
+
++ No parameters, 8x8 board
+
+Center pieces in play
+
+Inner Class GameMove
+--------------------
+
+If the move is legal (determined by isLegalPlay method), a game move is made
+(determined by gameMove method)
+
+Method isEnemySquare
+--------------------
+
+When it's white turn, enemy squares are colored black
+
+When it's black turn, enemy squares are colored white
+
+Method isAllySquare
+-------------------
+
+When it's white turn, ally squares are colored white
+
+When it's black turn, ally squares are colored black
+
+Method isOpenSquare
+-------------------
+
+When the square's color is the default color, it's an open square
+
+Method isLegalMove
+------------------
+
+First, any legal move must be on an open square (functional)
+
+Second, any legal move must be enclose enemy squares within an ally square
+(Not functional)
+
+Currently, this will always return false.
+
+Method passTurn(Jbutton[][] buttonGrid)
+---------------------------------------
+
+Checks if there are any legal plays on the board.
+
+What Needs to be Added
+======================
+
+Additions to isLegalMove method
+-------------------------------
+
+Obtain the location in an array of the button
+
++ Row position = x
+
++ Column position = y
+
+Loop through the surrounding squares to find if it's a legal play
+
++ Could be done with another inner class
+
+inner class LegalPlay
+---------------------
+
+Has two fields
+
++ private int dx;
+
++ private int dy;
+
+Has a constructor
+
+  public LegalPlay(int dx, int dy) {
+    this.dX = dx;
+    this.dY = dy;
+  }
+
+int x;
+int y;
+
+public class LegalPlay {
+  
+  private int row;
+  
+  private int column;
+  
+  private int dy;
+  
+  private int dx;
+  
+  public LegalPlay(JButton thisSquare int dx, int dy) {
+    this.dy = dy;
+	this.dx = dx;
+	
+	for(int i = 1; i < buttonGrid.length; i++) {
+	  for(int j = 1; j < buttonGrid[0].length; j++) { 
+        if (buttonGrid[i][j].equals(thisSquare)) {
+	      row = i;
+	      column = j;
+	    }
+      }
+    }
+  }
+}
+
+public boolean isLegalDirection() {
+
+  int x = dx + getRow();
+  int y = dy + getColumn();
+  
+  if(x > buttonGrid.length || y > buttonGrid[0].length)
+    return false;
+  if(!isEnemySquare(buttonGrid))
+    return false;
+  
+  while(x < buttonGrid.length || y < buttonGrid[0].length) {
+    if(isOpenSquare(buttonGrid[x][y])
+	  return false; 
+    if(isAllySquare(buttonGrid[x][y]) {
+      flipSquares(x, y, dx, dy)
+	  }
+  }
+}
+  
+

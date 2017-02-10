@@ -1,0 +1,37 @@
+public class ReversiTester {
+  
+  /**
+   * Tests whether the constructors produce the expected boards
+   */
+  @Test
+  public void testGameBoards() {
+    Reversi noParameter = new Reversi();
+    Reversi oneParameter = new Reversi(3);
+    Reversi twoParameters = new Reversi(5, 8);
+    
+    /* Checks if the lengths are correct*/
+    assertTrue(noParameter.getButtonGrid.length == 8);
+    assertTrue(noParameter.getButtonGrid[0].length == 8);
+    assertTrue(oneParameter.getButtonGrid.length == 3);
+    assertTrue(oneParameter.getButtonGrid[0].length == 3);
+    assertTrue(twoParameters.getButtonGrid.length == 5);
+    assertTrue(twoParameters.getButtonGrid[0].length == 8);
+   /* Checks if the colors are correct*/
+    assertTrue(noParameter.getButtonGrid[3][4].getBackground() == Color.WHITE);
+    assertTrue(noParameter.getButtonGrid[4][3].getBackground() == Color.WHITE);
+    assertTrue(noParameter.getButtonGrid[3][3].getBackground() == Color.BLACK);
+    assertTrue(noParameter.getButtonGrid[4][4].getBackground() == Color.BLACK);
+
+    /* Ignores remainder in division e.g. (3 / 2 - 1) would be the first row*/
+    assertTrue(oneParameter.getButtonGrid[0][1].getBackground() == Color.WHITE);
+    assertTrue(oneParameter.getButtonGrid[1][0].getBackground() == Color.WHITE);
+    assertTrue(noParameter.getButtonGrid[0][0].getBackground() == Color.BLACK);
+    assertTrue(noParameter.getButtonGrid[1][1].getBackground() == Color.BLACK);
+    
+    assertTrue(oneParameter.getButtonGrid[1][4].getBackground() == Color.WHITE);
+    assertTrue(oneParameter.getButtonGrid[2][3].getBackground() == Color.WHITE);
+    assertTrue(noParameter.getButtonGrid[1][3].getBackground() == Color.BLACK);
+    assertTrue(noParameter.getButtonGrid[2][4].getBackground() == Color.BLACK);
+  }
+  
+}

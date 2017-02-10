@@ -1,0 +1,46 @@
+% Project 4
+% Kameron Damaska
+% 04/05/2016
+
+Aspects of the Game
+===================
+
+
++ Create Board
+
++ Play Game
+
++ Decide winner
+
+
+Create Board
+============
+
+The board must have have x rows and y columns. Each coordinate must be able to
+be clicked on.
+
+	+  Create the grid on a JPanel 
+	  
+	  JPanel board = new JPanel(new GridLayout(x, y));
+	  
+	+ Add buttons to create container created above. 
+	
+		+ Use for-loop?
+		
+		  for (i = 0; i < x * y; i++)
+		    add(new Button());
+	  
+	+ The JPanel must then be added as the center component of a JFrame
+	
+	  JFrame frame = new JFrame();
+	  frame.add(this.board, "Center");
+	
+	+ Set the board visible
+	
+	  frame.setVisible(true);  
+	
+Interactive Buttons
+===================
+
+Record when a button is clicked and which button is clicked.
+

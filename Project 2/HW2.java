@@ -1,0 +1,251 @@
+/*Kameron Damaska
+ * 
+ * The purpose of this class is to manipulate Strings using the StringBuilder
+ * class. Each method checks the contents of a String and performs various 
+ * tasks on the String.*/
+
+public class HW2 {
+  
+  /*This program takes a string and checks to see if it is in alphabetical order
+   * the program ignores non-alphabetical characters*/  
+  public static boolean alphabeticalOrder(String s) {
+    
+    /*Stores the previous letter checked in the String*/
+    int previousLetter = 0; 
+    
+    /*The goal of the loop is to see if the String is alphabetical order. The
+     * subgoal is to check if the current letter is less than the previous
+     * letter*/
+    for (int index = 0; index < s.length(); index = index + 1) {
+      if (Character.isLetter(s.charAt(index))) {
+        if (Character.toLowerCase(s.charAt(index)) < previousLetter)
+          return false;
+        previousLetter = Character.toLowerCase(s.charAt(index));
+      }
+    }
+    return true;
+  }
+  
+  /*This is a helper method that takes an char and an int and shifts the 
+   * char by the int value if it's a number or letter (a, 3 -> d; Z, 4 -> D)*/
+  private static int getCharShift(char c, int n) {
+    
+    /*The value that, when added to the lowest upper case, upper case, or 
+     * numerical char, will return the value of the post-casear cipher char.*/
+    int cShifted = 0; 
+    
+    /*Shifts char by n, if a letter or number*/
+    if (Character.isLowerCase(c)) {
+      cShifted = 'a' + (c - 'a' + n) % 26;
+      return cShifted;
+    }
+    else if (Character.isUpperCase(c)) {
+      cShifted = 'A' + (c - 'A' + n) % 26;
+      return cShifted;
+    }
+    else if (Character.isDigit(c)) {
+      cShifted = '0' + (c- '0' + n) % 10;
+      return cShifted;
+    }
+    else {
+      return c;
+    }
+  }
+  
+  /*This method takes a String and int parameter. It will perform a Caesar
+   * cipher on the String. A Caesar cipher shifts each alphabetical and
+   * numerical character in the string by the number inputted
+   * E.g. caesarCipher("a", 3) will return "d"*/
+  public static String caesarCipher(String s, int n) {
+    
+    /*Stores the value after  the casear cipher is performed*/
+    StringBuilder caesarCipher = new StringBuilder(); 
+    
+    /*Performs the caesar cipher on the String. The subgoal is to shift an
+     * individual char (if letter or number).*/
+    for(int index = 0; index < s.length(); index = index + 1) {
+      
+      /*Stores the post-shift letter or number*/
+      int shiftedChar = getCharShift(s.charAt(index), n);
+      caesarCipher.append((char)shiftedChar);
+    }
+    return caesarCipher.toString();
+  }
+  
+  /*The method takes a String parameter and int paramater, and reutrns a
+   * String. Repeats each char in the String parameter n times.*/
+  public static String repeatChars(String s, int n) {
+    
+    /*Records the value with word repeated n number of times*/
+    StringBuilder repeatChars = new StringBuilder(); 
+    
+    /*Goal of the loop is to create a String with each char repeated n time.*/
+    for(int index = 0; index < s.length(); index = index + 1) {
+      
+      /*Repeats an individual char n times*/
+      for (int numAppend = 0; numAppend < n; numAppend = numAppend + 1) {
+        repeatChars.append(s.charAt(index));
+      }
+    }
+    return repeatChars.toString();
+  }
+  
+  /*This method takes a String parameter and returns a String. The String
+   * returns the integer length of each word in the String separated by a space.
+   * All other characters remain in the String.*/
+  public static String wordLengths(String s) {
+    
+    /*Records the number of letters in each word, followed by a space*/
+    StringBuilder wordLengths = new StringBuilder(); 
+    
+    /*Number of letters in a word, which is any string of letters without a 
+     * non-letter character.*/
+    int lettersInWord = 0; 
+    
+    /*Goal of the loop is to create a StringBuilder with the length of each
+     * word in place of the word*/
+    for (int index = 0; index < s.length(); index = index + 1) {
+      
+      /*Counts the letters in a word, then appends the number. Non-letter chars
+       * are also appended*/
+      if(Character.isLetter(s.charAt(index)))
+        lettersInWord = lettersInWord + 1;
+      else {
+        if (lettersInWord > 0)
+          wordLengths.append(lettersInWord);
+        wordLengths.append(s.charAt(index));
+        lettersInWord = 0;
+      }
+    }
+    return wordLengths.toString();
+  }
+  
+  /*This is a helper method that takes two StringBuilder values and an int. The
+   * first StringBuilder is appended to the Second n number of times, with a
+   * space in-between each StringBuilder appended.*/
+  private static void loopWord(StringBuilder sLooped, StringBuilder s, int n) {
+    
+    /*Goal of the loop is to append a word n times with a space between each
+     * word*/
+    for (int repeat = 0; repeat < n; repeat = repeat + 1) {
+      s.append(sLooped);
+      if (repeat + 1 < n)
+        s.append(" ");
+    }
+  }
+  
+  /*This method takes a String and an int parameter. A String is returned that
+   * has each word repeated n number of times, and all non-letter characters
+   * kept the same*/
+  public static String repeatWords(String s, int n) {
+    
+    /*Records a word in the String parameter.*/
+    StringBuilder individualWord = new StringBuilder();
+    
+    /*Records each word n number of times*/
+    StringBuilder returnedString = new StringBuilder();
+    
+    /*The goal of the loop is to repeat each word n times. The subgoal is to
+     * append an individual word n times and appended non-letter chars*/
+    for (int index = 0; index < s.length(); index = index + 1) {
+      
+      /*Adds to a word, appends the word n times, and appends non-letter
+       * chars*/
+      if (Character.isLetter(s.charAt(index))) {
+        individualWord.append(s.charAt(index));
+        if (index + 1 == s.length())
+          loopWord(individualWord, returnedString, n);
+      }
+      else if(individualWord.length() > 0) {
+        loopWord(individualWord, returnedString, n);
+        returnedString.append(s.charAt(index));
+        individualWord = new StringBuilder();
+      }
+      else
+        returnedString.append(s.charAt(index));
+    }
+    return returnedString.toString();
+  }
+  
+  /*Returns the position in the alphabet that a char is, e.g. 'A' would be 0,
+   *'z' would be 25, etc.*/
+  private static int numberInAlphabet(int c) {
+    
+    /*The location in the alphabet a character corresponds to, between 0 and 
+     * 25.*/
+    int cNumInAlphabet = 0; 
+    
+    /*Finds the location in the alphabet of a letter*/
+    if(Character.isLowerCase(c))
+      cNumInAlphabet = c - 'a';
+    if(Character.isUpperCase(c))
+      cNumInAlphabet = c - 'A';
+    return cNumInAlphabet;
+  }
+  
+  /*Takes two String parameters, and returns a String. The returned String is
+   the first parameter, except each alphabetical character is switched to the
+   corresponding char in the second String. If the second String exceeds 26 
+   characterts, all others are ignored.*/
+  public static String remap(String s, String sRemap) {
+    
+    /*Records the String with remapped letters*/
+    StringBuilder remapString = new StringBuilder();
+    
+    /*The goal of the loop is remap the first String parameter, using the
+     * second String parameter as a key. The subgoal is to remap an individual
+     * letter or append a non-letter.*/
+    for (int index = 0; index < s.length(); index = index + 1) {
+      
+      /*Records the value of the char at the index point on the String*/
+      int charIndex = s.charAt(index);
+      
+      /*Finds the char in the second String that a given letter is remapped to*/
+      if (Character.isLetter(charIndex)) {
+        if (numberInAlphabet(charIndex) < sRemap.length())
+          charIndex = sRemap.charAt(numberInAlphabet(charIndex));
+      }
+      remapString.append((char)charIndex);
+    }
+    return remapString.toString();
+  }
+  
+  /*Generates a random alphabetical character*/
+  private static int randomLetterGenerator() {
+    return 'a' + (int)(Math.random() * 26);
+  }
+  
+  /*Takes a String and returns a new String with each alphabetical letter
+   * assigned to a random new letter. Non-letters are left unchanged and two
+   * different letters may not be assigned to same letter.*/
+  public static String cryptoquip(String s) {
+    
+    /*Stores one of every letter in a random order*/
+    StringBuilder randomAlphabet = new StringBuilder();
+    
+    /*The goal of the loop is to append a random letter that has yet to appear
+     * on the StringBuilder. The subgoal is to generate a random letter and see
+     * if it already exists on the StringBuilder.*/
+    for (int length = 1; length <= 26; length = length + 1) {
+      
+      /*Stores a randomly generated letter*/
+      int letter = randomLetterGenerator();
+      
+      /*The goal of the loop is to find a random letter that has
+       * yet to appear in the StringBuilder. The subgoal is the compare the
+       * random letter to the letter at index. If they're the same, a new
+       * letter is generated and the loops starts over.*/
+      if (randomAlphabet.length() > 0) {
+        for (int index = 0; index < randomAlphabet.length(); index = index + 1 ) {
+          if (letter == randomAlphabet.charAt(index)) {
+            letter = randomLetterGenerator();
+            index = -1;
+          }
+        }
+      }
+      randomAlphabet.append((char)letter);
+    }
+    return remap(s, randomAlphabet.toString());
+  }
+  
+}

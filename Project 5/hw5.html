@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+     "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+<title>EECS 132: Homework Assignment 5</title>
+</head>
+
+<body>
+<h2>Programming Project 5</h2>
+<h3>Due Monday, April 25 at 11:59pm</h3>
+
+<p><strong>As Tuesday, April 26 is Reading Day and that day should to be spent preparing for final exams, <em>no late assignments will be accepted</em>.</strong></p>
+
+<p><em><strong>IMPORTANT:</strong> Read the
+<strong>Do's and Dont's</strong>
+in the <strong>Course Honor Policy</strong> found on blackboard. </em>
+</p>
+
+
+<h3>I. Overview</h3>
+
+
+<h4>DNA</h4>
+DNA is a molecule made up of a sequence of nucleobases: adenine (A), cytosine (C), guanine (G), and thymine(T).  The sequence of bases in the DNA form the code of our genes.
+You may have heard that scientists are sequencing (determining the order of the bases) the DNA from a large number of species, including humans.  To sequence DNA from a sample, the sample needs to contain many copies of the DNA.  For example,
+the sample could contain a large number of human cells from the same person.  Then we do the following:
+<ol>
+<li>the multiple copies of the DNA are chopped up into small pieces</li>
+<li>the pieces are put into a solution with appropriate molecules so that the DNA pieces are cloned into many, many copies</li>
+<li>sequencer machines can identify the DNA sequence of the small pieces</li>
+<li>then it becomes a giant puzzle problem as programs are used to figure out how to reassemble the little pieces into the original long DNA strands.</li>
+</ol>
+If we have enough copies of the original DNA, then when we break them each up into pieces, we will not break the different copies at the same spots.  The sequencing programs use this overlap between pieces as the clue for determining
+which pieces connect to which pieces.
+</p>
+
+
+<h4>A Short Explanation of Enum</h4>
+
+<p>You will use the <tt>enum</tt> type in this project.</p>
+
+<p>An <em>enum</em> is a shortcut for a class with a private constructor.
+The code
+<pre>
+enum WeekDay {
+  Monday, Tuesday, Wednesday, Thursday, Friday;
+  <em>you may add additional methods here</em>
+}
+</pre>
+is identical to
+<pre>
+public static class WeekDay {
+  public static final WeekDay Monday = new WeekDay();
+  public static final WeekDay Tuesday = new WeekDay();
+  public static final WeekDay Wednesday = new WeekDay();
+  public static final WeekDay Thursday = new WeekDay();
+  public static final WeekDay Friday = new WeekDay();
+
+  private WeekDay() {
+  }
+
+  <em>some special helper methods provided for enums (see your text)</em>
+
+  <em>you may add additional methods here</em>
+}
+</pre>
+ So, <tt>WeekDay</tt> will be static inner classes of whatever class you place the enum inside.
+The <tt>Monday</tt>, <tt>Tuesday</tt>, etc. are fields set to instances of the <tt>WeekDay</tt> class.  Because the constructor is private,
+no other instances can be created than one instance for each of the listed fields.
+(Note that we do not need to override the <tt>equals</tt> method in an <tt>enum</tt>.  Since no other instances can be created than those stored in the fields,
+you can use <tt>==</tt> to compare enum values.)
+As entered, you have a default private constructor for the enum, but you can create your own constructor if you wish.
+For example, we could create a constructor that takes a <tt>String</tt> that is the name of the day.  If we do that, we would
+need to do the following:
+<pre>
+enum WeekDay {
+  Monday("Monday"), Tuesday("Tuesday"), Wednesday("Wednesday"), Thursday("Thursday"), Friday("Friday");
+
+  private String name;
+
+  private WeekDay(String name) {
+    this.name = name;
+  }
+
+  <em>you may add additional methods here</em>
+}
+</pre>
+</p>
+<hr>
+
+<h3>II. Code Readability (20% of your project grade)</h3>
+
+<p>To receive the full readability marks, your code must follow the following guideline:
+<ul>
+<li>All variables (fields, parameters, local variables) must be given appropriate and descriptive names.</li>
+<li>All variable and method names must start with a lowercase letter.  All class names must start with an uppercase letter.</li>
+<li>The class body should be organized so that all the fields are at the top of the file, the
+constructors are next, the non-static methods next, and the static methods at the bottom with the main method last.</li>
+<li>There should not be two statements on the same line.</li>
+<li>All code must be properly indented (see page 689 of the Lewis book for an example of good style).
+    The amount of indentation is up to you, but it should be at least 2 spaces, and it must be used
+    consistently throughout the code.</li>
+<li>You must be consistent in your use of {, }.  The closing } must be on its own line and indented
+the same amount as the line containing the opening {.</li>
+<li>There must be an empty line between each method.</li>
+<li>There must be a space separating each operator from its operands as well as a space after each comma.</li>
+<li>There must be a comment at the top of the file that <strong>is in proper JavaDoc format</strong> and
+includes both your name and a description of what the class represents.  The comment should include tags for the author.</li>
+<li>There must be a comment directly above each method (including constructors) that <strong>is in proper JavaDoc format</strong>
+ and states <em>what</em> task the method is doing, not how it is doing it.  The comment should include
+ tags for any parameters, return values and exceptions, and the tags should include appropriate comments
+ that indicate the purpose of the inputs, the value returned, and the meaning of the exceptions.</li>
+<li>There must be a comment directly above each field that, in one line, states what the field is storing.</li>
+<li>There must be a comment either above or to the right of each non-field variable indicating what the variable is storing.  Any comments placed to the right should be aligned so they start on the same column.</li>
+<li>There must be a comment above each loop that indicates the purpose of the loop.  Ideally, the comment would
+consist of any preconditions (if they exist) and the subgoal for the loop iteration.</li>
+<li>Any code that is complicated should have a short comment either above it or aligned to the right that
+explains the logic of the code.</li>
+</ul>
+</p>
+
+<hr>
+
+<h3>III. Program Testing (20% of your project grade)</h3>
+
+<p>You are to create two JUnit test classes: <tt>DoubleLinkedListTester</tt> and <tt>DNATester</tt>.  All your tests should be coded as unit tests in these classes.  Your report should be a short
+document that explains why the JUnit tests you chose to do thoroughly test each method.</p>
+
+<hr>
+
+<h3>IV. Java Programming (60% of your grade)</h3>
+
+<p>You will write a DNA sequencing program.</p>
+
+<h4>General Guidelines</h4>
+<p><strong>VERY IMPORTANT:</strong>  The purpose of this homework is to give you practice using lists, generic types, and iterators.  You must use these types correctly.
+<ul><li>You must <em>NOT</em> have any warning messages when compiling your code due to improper use of generic types.</li>
+    <li>In many places, you are given the choice of using the linked list from class or the one from the Java API.  However, you <em>MUST</em> use the types correctly.  Just because a method exists does not mean you can use it.  In particular,
+you should not access elements of the linked list by index nor do other operations that require extra traversals of the linked list.</li>
+<li>You need to avoid unnecessary fields in your class. </li>
+<li>Your loops should be simple.  Avoid nested loops unless they are required. Use good loop conditions so that you do not need <tt>break</tt> or <tt>continue</tt> or break-like code in the body of your loops.</li>
+</li></ul>
+
+<h4>Step 1: Add methods to <tt>DoubleLinkedList</tt>.</h4>
+
+<p>Add the following methods to the <tt>DoubleLinkedList</tt> class you started in lab. (At the minimum, you should have completed the <tt>addToFront</tt> and <tt>addToBack</tt> methods.)
+<ol>
+<li><tt>equals</tt>:  This method should override the <tt>equals</tt> method of <tt>Object</tt>.  Two double linked lists are equal if they contain the same elements in the same order.
+<strong>Your method should not have any warning messages when compiled.</strong>
+<em>Hint: Use the @Override annotation so you do not accidentally make a simple mistake.</em></li>
+
+<li><tt>append</tt>: a <tt>void</tt> method that takes a <tt>DoubleLinkedList</tt> and appends the nodes of the linked list to the end of the nodes of this list.  The double linked list parameter
+may be destroyed by this method.</li>
+</ol>
+
+<h4>Step 2: Make <tt>DoubleLinkedList</tt> implement the <tt>Iterable</tt> interaface.</h4>
+
+<p>You are to expand the <tt>DoubleLinkedList</tt> class you worked on in lab.  You are to make the <tt>DoubleLinkedList</tt> implement <tt>Iterable</tt> and have the
+<tt>iterator</tt> method return a <tt>ListIterator</tt> from the API.  <tt>ListIterator</tt> is an extension of <tt>Iterator</tt> and has additional method stubs that
+must be overridden.  You are required to implement the methods
+<ol><li><tt>add</tt></li><li><tt>hasNext</tt></li><li><tt>hasPrevious</tt></li><li><tt>next</tt></li><li><tt>previous</tt></li><li><tt>set</tt></li></ol>
+Your implementations <em>must</em> match the descriptions given in the Java API.  You <em>may</em> implement the other methods of the interface, but that is not required.
+For any method you choose to not implement, have the method throw a <tt>UnsupportedOperationException</tt>.</p>
+
+<h4>Step 3: Create a <tt>DNA</tt> class</h4>
+
+<p>Create a class <tt>DNA</tt> that contains a public <em>enum</em> type called <tt>Base</tt>.  The <tt>Base</tt> type should have four possible values: <tt>A</tt>, <tt>C</tt>, <tt>G</tt>, and <tt>T</tt>.
+The four letters represent the four different amino acids that make up a DNA sequence.</p>
+
+<p>Organize your class so <tt>DNA</tt> is a <tt>DoubleLinkedList</tt> that can only store elements of <tt>Base</tt>. 
+You may use the <tt>LinkedList</tt> class from the API instead of your <tt>DoubleLinkedList</tt> class. <strong>However</strong>, you must still use the linked list in an efficient and appropriate manner.
+Just because a method exists in the API does not mean you should use it.</p>
+
+<p>Add the following methods to the <tt>DNA</tt> class:
+<ol>
+<li><tt>String toString()</tt>: returns a <tt>String</tt> representation of the DNA.  The string should be the letters (without spaces) representing the amino acids.  
+For example, <tt>"ACGGCGT"</tt> represents a DNA that contains 7 bases.  The base at the <em>head</em> of the DNA is A and the base at the <em>tail</em> is T. 
+<em>For this method, you should use a for-each loop to run through the DNA bases.</em> </li> 
+
+<li><tt>static DNA string2DNA(String s)</tt> given a String, returns a the DNA sequence represented by the String.  For example, given the string <tt>"GCGTTATA"</tt>, the method should return a DNA
+with 8 bases, the head base is G and the tail base is A.  If the <tt>String s</tt> is empty or contains a character that is not G, T, C, or A, throw an <tt>IllegalArgumentException</tt>.</li>
+
+<li><tt>void splice(DNA dna, int numbases)</tt>: remove <tt>numbases</tt> from the start of <tt>dna</tt> and then append the remaining bases of <tt>dna</tt> to the end of this <tt>DNA</tt>.
+If <tt>dna</tt> has fewer than <tt>numbases</tt> bases, then nothing is appended.  The parameter <tt>dna</tt> may be destroyed by this method.</li>
+
+<li><tt>static boolean overlaps(DNA dna1, DNA dna2, int n)</tt>: returns <tt>true</tt> if the last <tt>n</tt> bases of <tt>dna1</tt> exactly match the first <tt>n</tt> bases of <tt>dna2</tt>.
+Returns <tt>false</tt> if there is no such match.</li>
+
+<li><tt>main</tt>: Takes two strings that represent DNA sequences, determines the greater overlap, the end of the first to the start of the second or the end of the second to the start of the first.
+The method then performs the appropriate splicing to create the minimum DNA sequence that splices the two strings and prints the result.  The <tt>main</tt> method should not throw any exceptions.
+Instead, if bad data is entered, the method should print an appropriate message. 
+<p>For example, if we run the program with <tt>java DNA CGCTCACCTAT ATAATCGCTC</tt>, then the largest overlap of the first onto the second is 2 bases (AT), but the largest overlap of the second
+onto the first is 5 bases (CGCTC).  We would then splice the second onto the first producing ATAATCGCTCACCTAT. </li>
+</ol></p>
+
+<p>Make the DNA <tt>Comparable</tt>.  A shorter DNA strand should be ordered before a longer DNA strand.  Two strands with equal lengths should be ordered alphabetically. 
+You should be able to implement this using a <em>single</em> traversal of the data.</p>
+
+<hr>
+
+<h3>Extra Credit: (up to 10% of the project grade)</h3>
+
+<p><strong>If you do the extra credit:</strong> you must include a report where you describe your algorithm and your justification for why it is finding the shortest possible DNA sequence.</p>
+
+<p>For the first part of the extra credit, the <tt>main</tt> method should take any number of DNA strings and form the shortest possible DNA from splicing all the input DNA together.  You may assume that no 
+DNA string is a substring of any other DNA string or splice of DNA strings.  However, you may not assume that the order that the strings are given is the order they are to be spliced.  Instead,
+you must find an order to do the splicing such that the final DNA string is as small as possible.  Also, all DNA strings are given in the proper direction, and you will not need to reverse any strings.</p>
+
+<p>The second part of the extra credit is a more challenging problem: suppose we now allow a string to be a subset of one string or a splice of multiple strings.  Now, can you splice the DNA sequences together to form the shortest
+possible DNA string?</p>
+
+
+</body>
+</html>
+

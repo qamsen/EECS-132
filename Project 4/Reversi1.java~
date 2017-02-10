@@ -1,0 +1,384 @@
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+/**
+ * A game called Reversi
+ */
+public class Reversi {
+  
+  /* The board Reversi will be played on*/
+  private final JPanel board;
+  
+  /* The frame the board will be placed on*/
+  private final JFrame frame;
+  
+  /* A two-dimensional array of buttons that will go on the board*/
+  private final JButton[][] buttonGrid;
+  
+  /* Records whose turn it is*/
+  private boolean whiteTurn;
+  
+  /* Stores the row coordinate of a button*/
+  private int row;
+  
+  /* Stores the column coordinate of a button*/
+  private int column;
+  
+  /* Stores an index row value*/
+  private int indexRow;
+  
+  /* Stores an index column value*/
+  private int indexColumn;
+  
+  /**
+   * Creates a game board
+   * 
+   * @param x  The number of rows on the board
+   * @param y  The number of columns on the board
+   */
+  public Reversi(int x, int y) {
+    
+    /* Initializes the board with x number of rows and y number of columns*/
+    board = new JPanel(new GridLayout(x, y));
+    
+    /* Initializes the grid of buttons*/
+    buttonGrid = new JButton[x + 1][y + 1];
+    
+    /* Initializes each button from the array and add it to the grid*/
+    for (int i = 1; i < buttonGrid.length; i++) {
+      for (int j = 1; j < buttonGrid[0].length; j++) {
+        buttonGrid[i][j] = new JButton(); 
+        board.add(buttonGrid[i][j]);
+        buttonGrid[i][j].addActionListener(new GameMove());
+      }
+    }
+    
+    /* Initializes the frame and adds the board to it*/
+    frame = new JFrame("Reversi");
+    frame.add(board, "Center");
+    
+    /* Starts the game on white's turn*/
+    whiteTurn = true;
+    
+    /* Creates the initial board state*/
+    buttonGrid[x / 2][y / 2].setBackground(Color.WHITE);
+    buttonGrid[x / 2 + 1][y / 2].setBackground(Color.BLACK);
+    buttonGrid[x / 2][y / 2 + 1].setBackground(Color.BLACK);
+    buttonGrid[x / 2 + 1][y / 2 + 1].setBackground(Color.WHITE);
+    
+    /* Sets each button size and sets the frame visible*/
+    frame.setSize(60 * x, 60 * y);
+    frame.setVisible(true);
+  }
+  
+  /**
+   * Creates a game board
+   * 
+   * @param dimension  the number of rows and the number of columns
+   */
+  public Reversi(int dimension) {
+    this(dimension, dimension);
+  }
+  
+  /**
+   * Creates a game board with 8 rows and 8 columns
+   */
+  public Reversi() {
+    this(8, 8);
+  }
+  
+  public class GameMove implements ActionListener {
+    
+    /**
+     * Makes the appropriate game move for an input
+     *
+     * @param e  the button pressed
+     */
+    public void actionPerformed(ActionEvent e) {
+      
+      /* The button pressed*/
+      JButton thisButton = (JButton)e.getSource();
+      
+      /* Makes appropriate game mov*/
+      gameMove(thisButton);
+    }
+  }
+  
+  /**
+   * Sets the row coordinate of a button
+   *
+   * @param row  The row coordinate of a button
+   */
+  private void setRow(int row) {
+    this.row = row;
+  }
+  
+  /** 
+   * Returns the row coordinate of a button
+   * 
+   * @return  The row coordinate of a button
+   */
+  private int getRow() {
+    return row;
+  }
+  
+  /**
+   * Sets the column coordinate of a button
+   * 
+   * @param column  The column coordinate of a button
+   */
+  private void setColumn (int column) {
+    this.column = column;
+  }
+  
+  /**
+   * Returns the column coordinate of a button
+   * 
+   * @return  The column coordinate of a button
+   */
+  private int getColumn() {
+    return column;
+  }
+  
+  /**
+   * Sets the index row coordinate on the grid
+   *
+   * @param indexRow  The index row value
+   */
+  private void setIndexRow(int indexRow) {
+    this.indexRow = indexRow;
+  }
+  
+  /**
+   * Gets the index row coordinate on the grid
+   *
+   * @return The index row value
+   */
+  private int getIndexRow() {
+    return indexRow;
+  }
+  
+  /**
+   * Sets the index column coordinate on the grid
+   *
+   * @param indexColumn  The index column value
+   */
+  private void setIndexColumn(int indexColumn) {
+    this.indexColumn = indexColumn;
+  }
+  
+  /**
+   * Gets the index column coordinate on the grid
+   *
+   * @return The index column value
+   */
+  private int getIndexColumn() {
+    return indexColumn;
+  }
+  
+  /**
+   * Determines whether a square is an enemy square
+   * 
+   * @param thisSquare  The square in question.
+   */
+  private boolean isEnemySquare(JButton thisSquare) {
+    
+    /* When white's turn, black is enemy square and vice versa*/
+    if (whiteTurn)
+      return (Color.BLACK == thisSquare.getBackground());
+    else
+      return (Color.WHITE == thisSquare.getBackground());
+  }
+  
+  /**
+   * Determines whether a square is an ally square
+   * 
+   * @param thisSquare  The square in question.
+   */
+  private boolean isAllySquare(JButton thisSquare) {
+    
+    /* When white's turn, black is enemy square and vice versa*/
+    if (whiteTurn)
+      return (Color.WHITE == thisSquare.getBackground());
+    else
+      return (Color.BLACK == thisSquare.getBackground());
+  }
+  
+  /**
+   * Determines whether the chosen square is available
+   * 
+   * @param thisSquare  The square that in question
+   */
+  private boolean isOpenSquare(JButton thisSquare) {
+    
+    /* Whether or not the square has been played on*/
+    boolean openSpace = false;
+    
+    /* If the square isn't colored, the space is open*/
+    if(thisSquare.getBackground() == new JButton().getBackground())
+      openSpace = true;
+    
+    return openSpace;
+  }
+  
+  /**
+   * Checks if the index is out of the array's bounds
+   * 
+   * @return  If the index is out of the array's bounds
+   */
+  private boolean isOutOfBounds() {
+    
+    boolean outOfBounds = true;
+    
+    if (getIndexRow() < buttonGrid.length)
+      outOfBounds = false;
+    if (getIndexColumn() < buttonGrid.length)
+      outOfBounds = false;
+    if (getIndexRow() > 0)
+      outOfBounds = false;
+    if (getIndexColumn() > 0)
+      outOfBounds = false;
+    
+    return outOfBounds;
+  }
+
+  /**
+   * Finds where in the array a button is
+   * 
+   * @param thisButton  The button in question
+   */
+  private void findButton(JButton thisButton) {      
+    /* Loops through the multi-dimensional array to where the JButton is
+     * in the array*/
+    for (int i = 1; i < buttonGrid.length; i++) {
+      for (int j = 1; j < buttonGrid[0].length; j++) {
+        
+        /* When the JButton is found, record the row and column coordinate*/
+        if (buttonGrid[i][j].equals(thisButton)) {
+          setRow(i);
+          setColumn(j);
+        }
+      }
+    }
+  }
+  
+  /**
+   * Changes the color of the square to the current player's color
+   * 
+   * @param thisButton  the button in question
+   */
+  private void changeSquareColor(JButton thisButton) {
+    
+    /* Turns button white on white's turn, black on black's turn*/
+    if (whiteTurn) 
+      thisButton.setBackground(Color.WHITE);
+    else
+      thisButton.setBackground(Color.BLACK);
+  }
+  
+  /**
+   * Flips the squares between the indeces and the actual row and column of
+   * the square
+   * 
+   * @param dx  the amount the row index was incremented by
+   * @param dy  the amount the column index was incremented by
+   */
+  public void flipSquares(int dx, int dy) {
+    
+    /* Flips the color of squares between the indeces and the original
+     * square*/
+    while(getIndexRow() != getRow() || getIndexColumn() != getColumn()) {
+      /* The color of the current player*/
+      changeSquareColor(buttonGrid[getIndexRow()][getIndexColumn()]);
+      setIndexRow(getIndexRow() - dx);
+      setIndexColumn(getIndexColumn() - dy);
+    }
+  }
+  
+  /**
+   * Checks the a play is legal in a particular direction
+   * 
+   * @param dx  incremental change to the row index
+   * @param dy  incremental change to the column index
+   */
+  public boolean isLegalDirection(int dx, int dy) {
+    
+    /* The row index is displaced one increment*/
+    setIndexRow(dx + getRow());
+    /* The column index is displaced one increment*/
+    setIndexColumn(dy + getColumn());
+    
+    if (isOutOfBounds())
+      return false;
+    
+    /* If this move is not on an enemy square, return false*/
+    if(!isEnemySquare(buttonGrid[getIndexRow()][getIndexColumn()]))
+      return false;
+    
+    while (!isOutOfBounds()) {
+      
+      /* Return true only if the enemy square is flanked by an ally square*/
+      if(isOpenSquare(buttonGrid[getIndexRow()][getIndexColumn()]))
+        return false;
+      if(isAllySquare(buttonGrid[getIndexRow()][getIndexColumn()]))
+        return true;
+      
+      setIndexRow(dx + getIndexRow());
+      setIndexColumn(dy + getIndexColumn());
+    }
+    return false;
+  }
+  
+  /**
+   * Performs a game move
+   * 
+   * @param thisButton  The button pressed
+   */
+  private void gameMove(JButton thisButton) {
+    
+    boolean legalMove = false;
+    
+    findButton(thisButton);
+    
+    if(isOpenSquare(thisButton)) {
+      if(isLegalDirection(-1, -1)) {
+        flipSquares(-1, -1);
+        legalMove = true;
+      }
+      if(isLegalDirection(-1, 0)) {
+        flipSquares(-1, 0);
+        legalMove = true;
+      }
+      if(isLegalDirection(-1, 1)) {
+        flipSquares(-1, 1);
+        legalMove = true;
+      }
+      if(isLegalDirection(0, -1)) {
+        flipSquares(0, -1);
+        legalMove = true;
+      }
+      if(isLegalDirection(0, 1)) {
+        flipSquares(0,1);
+        legalMove = true;
+      }
+      if(isLegalDirection(1, -1)) {
+        flipSquares(1, -1);
+        legalMove = true;
+      }
+      if(isLegalDirection(1, 0)) {
+        flipSquares(1, 0);
+        legalMove = true;
+      }
+      if(isLegalDirection(1, 1)) {
+        flipSquares(1, 1);
+        legalMove = true;
+      }
+      
+      if(legalMove) {
+        changeSquareColor(thisButton);
+        whiteTurn = !whiteTurn;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+LibraryAccount lib = new LibraryAccount("101", 5000, 500, 500);
+CreditAccount dining = new CreditAccount("101", 12);
+CreditAccount tuition = new CreditAccount("101", 12);
+StudentAccount x = new StudentAccount("101", "Jeff");
+tuition.charge(1500);
+dining.charge(1500);
+lib.incrementOverdueBooks();
+lib.incrementOverdueBooks();
+lib.incrementOverdueBooks();
+lib.incrementOverdueBooks();
+lib.endOfDay();
+dining.endOfMonth();
+tuition.endOfMonth();
+x.setLibraryAccount(lib);
+x.setDiningAccount(dining);
+x.setTuitionAccount(tuition);
+
+
+
+  /*Charges the amount entered to the account. Subtracts the amount entered 
+   * from the refund account, if the amount is positive the amount will be 
+   * added to the tuition account. otherwise the refund amount is set to the 
+   * difference. */
+  public void charge(double charge) {
+    if (charge - refundAmount > 0 && tuitionAccount != null) {
+      tuitionAccount.charge(charge - refundAmount);
+      refundAmount = 0;
+    } else {
+      refundAmount = -1 * (charge - refundAmount);
+      
+    }
+    
+  }

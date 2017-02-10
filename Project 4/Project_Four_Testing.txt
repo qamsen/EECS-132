@@ -1,0 +1,207 @@
+% Reversi Testing Report
+% Kameron Damaska
+% 04/11/16
+
+\pagebreak
+
+Game Rules
+==========
+
++ The board is a two-dimensional board that is at least 2 by 2.
+
++ The center four squares on the board alternate between white and black pieces
+
++ A piece can be played on any open square that 'captures' an enemy piece.
+
+	+ Capturing is when a series of enemy pieces are encapsulated between an
+	  ally piece and the piece being played.
+	  
++ More than one series of enemy pieces can be captured with one play
+
++ If a player does not have any moves, their turn is passed.
+
++ The game ends when neither player has any more moves that can be made.
+
++ The winner is whoever has the most pieces on the board.
+
++ Blank squares left over at the end of the game are counted towards the 
+  winner's score.
+
+The goal of this testing report is to provide insight on how to test these
+game mechanics.
+
+Constructors
+============
+
+No parameters
+-------------
+
+~~~
+Reversi()
+~~~
+
+This should launch a game with an 8x8 game board. 
+
++ White pieces should be occupying squares (4, 4) and (5, 5)
+
++ Black pieces should be occupying squares (4, 5) and (5, 4)
+
+One parameters
+--------------
+
+~~~
+Reversi(n)
+~~~
+
+This should launch a game with an n by n game board. This game assumes the
+parameter will be greater than 1.
+
++ White pieces should be occupying squares (n\ /\ 2\ -\ 1,\ n\ /\ 2\ -\ 1)  and
+  (n\ /\ 2,\ n\ /\ 2).
+  
++ Black pieces should be occupying squares (n\ /\ 2\ -\ 1,\ n\ /\ 2) 
+  and (n\ /\ 2,\ n\ /\ 2\ -\ 1). 
+  
+Two parameters
+--------------
+
+~~~
+Reversi(n1, n2)
+~~~
+
+This should launch a game with an n1 by n2 game board. This game assumes the
+parameter will be greater than 1.
+
++ White pieces should be occupying squares (n1\ /\ 2\ -\ 1,\ n2\ /\ 2) and 
+  (n1\ /\ 2,\ n2\ /\ 2\ -\ 1).
+  
++ Black pieces should be occupying squares (n1\ /\ 2\ -\ 1,\ n2\ /\ 2\ -\ 1) 
+  and (n1\ /\ 2,\ n2\ /\ 2).
+
+No arguments
+------------
+
+This should behave identically to the constructor with no parameters
+
+One argument
+------------
+
+If the one argument is an integer, that argument is put through the single
+parameter constructor.
+
+If the one argument is not an integer, a message will pop up requesting a 
+different arguments.
+
+Two arguments
+-------------
+
+If the two arguments are both integers, that argument is put through the
+two parameter constructor.
+
+If either of the two arguments are not integers, a message will pop up
+requesting different arguments.
+
+Three or more arguments
+-----------------------
+
+A message will pop up requesting different arguments.
+
+
+
+Playing the game
+================
+
+Legal plays
+-----------
+
+For a play to be legal, it must be:
+
+#. On a square that is currently blank
+
+#. Be surrounded by at least one enemy square
+
+#. An ally square must be at the end of a series of enemy squares in any
+   given direction, with the play in question being at the origin.
+   
+Non-blank squares
+-----------------
+
+Attempting to play a piece on a square that already has a piece on it should do
+nothing.
+
+Testing this should cover:
+
++ Attempting to play a piece on an ally piece
+
++ Attempting to play a piece on an enemy piece
+
+Test when it is black's turn and white's turn.
+
+Not surrounding enemy squares
+-----------------------------
+
+Attempting to play a piece where there are no surrounding enemies should do
+nothing.
+
+Testing this should cover:
+
++ Attempting to paly a piece where there are no surrounding enemies
+
+Surrounding enemy squares
+-------------------------
+
+Attempting to play a piece where there are surrounding enemies, but the series
+does not have an ally piece enclosing the series should do nothing.
+
+Attempting to play a piece where there are surrounding enemies and the series
+has an ally piece enclosing the series should flip all enemy pieces in the
+series.
+
+Testing this should cover:
+
++ A series of enemy squares that is enclosed by a blank square
+
++ A series of enemy squares that extends to the border of the board
+
++ A series of enemy squares that is enclosed by an ally square
+
+Test when it is black's turn and white's turn.
+
+Multiple captured series
+------------------------
+
+All enemy pieces enclosed by an ally piece should be flipped. This should work
+when there are multiple series of enemy pieces being captured.
+
+Testing this should cover:
+
++ Multiple series of enemies being captured by a play
+
+No available plays
+------------------
+
+When there are no available plays, a player's turn is skipped. A message should
+appear to inform the player their turn has been skipped.
+
+Testing this should cover:
+
++ A situation in which the player's turn must be skipped
+
+Test when it is black's turn and white's turn
+
+Game conclusion
+---------------
+
+When neither player has a play to be made, the game is concluded. Both players'
+scores are tallied and displayed with an option to play the game again or quit.
+
+Testing this should cover:
+
++ Checking if the tallied scores accurately represents the outcome of the
+  game.
+  
++ Check if the play game button launches a new game
+
++ Check if the quit button closes the game
+
+
